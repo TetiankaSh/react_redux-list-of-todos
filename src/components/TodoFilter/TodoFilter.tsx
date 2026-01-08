@@ -1,10 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { setStatus, setQuery } from '../../features/filter';
-import { RootState } from '../../app/store';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { Status } from '../../types/Status';
 
 export const TodoFilter = () => {
-  const dispatch = useDispatch();
-  const { status, query } = useSelector((state: RootState) => state.filter);
+  const dispatch = useAppDispatch();
+  const { status, query } = useAppSelector(state => state.filter);
 
   return (
     <form className="field has-addons">
@@ -13,7 +13,7 @@ export const TodoFilter = () => {
           <select
             data-cy="statusSelect"
             value={status}
-            onChange={e => dispatch(setStatus(e.target.value))}
+            onChange={e => dispatch(setStatus(e.target.value as Status))}
           >
             <option value="all">All</option>
             <option value="active">Active</option>

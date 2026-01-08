@@ -14,7 +14,7 @@ export const TodoList: React.FC<Props> = ({
   selectedTodoId,
   onSelectTodo,
 }) => {
-  const todos = useAppSelector(state => state.todos);
+  const { items: todos } = useAppSelector(state => state.todos);
   const { status, query } = useAppSelector(state => state.filter);
 
   const visibleTodos = todos.filter(todo => {

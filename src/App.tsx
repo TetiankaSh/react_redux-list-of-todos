@@ -11,20 +11,22 @@ import { Todo } from './types/Todo';
 import { Loader } from './components/Loader';
 import { TodoModal } from './components/TodoModal';
 import { useAppDispatch, useAppSelector } from './app/hooks';
-import { setTodos } from './features/todos';
+import { setTodos, setLoading } from './features/todos';
 
 export const App: React.FC = () => {
   // const [todos, setTodos] = useState<Todo[]>([]);
   const dispatch = useAppDispatch();
-  const todos = useAppSelector(state => state.todos);
+  const { isLoading } = useAppSelector(state => state.todos);
 
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
 
   useEffect(() => {
+    dispatch(setLoading(true));
+
     getTodos().then(todosFromServer => {
       dispatch(setTodos(todosFromServer));
     });
-  }, []);
+  }, [dispatch]);
 
   const handleSelectingTodo = useCallback((todo: Todo) => {
     setSelectedTodo(todo);
@@ -42,14 +44,13 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {todos.length > 0 ? (
+              {isLoading ? (
+                <Loader />
+              ) : (
                 <TodoList
-                  // todos={todos}
                   selectedTodoId={selectedTodo?.id}
                   onSelectTodo={handleSelectingTodo}
                 />
-              ) : (
-                <Loader />
               )}
             </div>
           </div>
